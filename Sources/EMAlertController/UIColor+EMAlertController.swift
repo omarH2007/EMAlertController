@@ -12,19 +12,19 @@ import UIKit
 extension UIColor {
     
     /// Default color of the EMAlertView
-    static let emAlertViewColor = alertViewColor()
+    public static let emAlertViewColor = alertViewColor()
     
     /// Default color of the EMAlertAction
-    static let iosBlueColor = defaultBlueColor()
+    public static let iosBlueColor = defaultBlueColor()
     
     /// Default color of the EMAlertView separator color
-    static let emSeparatorColor = buttonSepraratorColor()
+    public static let emSeparatorColor = buttonSepraratorColor()
     
     /// Default color of the EMAlertAction cancel style
-    static let emCancelColor = cancelRedColor()
+    public static let emCancelColor = cancelRedColor()
     
     /// Default color of the EMAlertAction normal style
-    static let emActionColor = defaultGrayColor()
+    public static let emActionColor = defaultGrayColor()
     
     static func alertViewColor() -> UIColor {
         return UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0)
