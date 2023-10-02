@@ -85,11 +85,8 @@ extension EMAlertAction: Separatable {
     switch forStyle {
     case .normal:
       setTitleColor(.emActionColor, for: .normal)
-      titleFont = UIFont.boldSystemFont(ofSize: 16)
-      
     case .cancel:
       setTitleColor(.emCancelColor, for: .normal)
-      titleFont = UIFont.boldSystemFont(ofSize: 16)
     }
   }
   @objc func actionTapped(sender: EMAlertAction) {

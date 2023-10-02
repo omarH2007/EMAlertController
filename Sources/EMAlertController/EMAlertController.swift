@@ -69,31 +69,31 @@ open class EMAlertController: UIViewController {
     return imageView
   }()
   
-  internal var titleLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = UIFont.boldSystemFont(ofSize: 17)
-    label.textAlignment = .center
-    label.textColor = .black
-    label.numberOfLines = 2
+    lazy public var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = titleFont ?? UIFont.boldSystemFont(ofSize: 17)
+        label.textAlignment = .center
+        label.textColor = .black
+        label.numberOfLines = 2
+        
+        return label
+    }()
     
-    return label
-  }()
-  
-  internal var messageTextView: UITextView = {
-    let textview = UITextView()
-    textview.translatesAutoresizingMaskIntoConstraints = false
-    textview.font = UIFont.systemFont(ofSize: 14)
-    textview.textAlignment = .center
-    textview.isEditable = false
-    textview.showsHorizontalScrollIndicator = false
-    textview.textColor = UIColor.black
-    textview.backgroundColor = UIColor.clear
-    textview.isScrollEnabled = false
-    textview.bounces = false
-    
-    return textview
-  }()
+    lazy public var messageTextView: UITextView = {
+        let textview = UITextView()
+        textview.translatesAutoresizingMaskIntoConstraints = false
+        textview.font = messageFont ?? UIFont.systemFont(ofSize: 14)
+        textview.textAlignment = .center
+        textview.isEditable = false
+        textview.showsHorizontalScrollIndicator = false
+        textview.textColor = UIColor.black
+        textview.backgroundColor = UIColor.clear
+        textview.isScrollEnabled = false
+        textview.bounces = false
+        
+        return textview
+    }()
   
   internal let buttonStackView: UIStackView = {
     let stackView = UIStackView()
@@ -104,6 +104,12 @@ open class EMAlertController: UIViewController {
     
     return stackView
   }()
+    
+    
+    public var actionFont:UIFont?
+    public var messageFont:UIFont?
+    public var titleFont:UIFont?
+
   
   public var cornerRadius: CGFloat? {
     willSet {
@@ -241,7 +247,7 @@ open class EMAlertController: UIViewController {
     
     titleText = title
     messageText = message
-    messageTextView.isSelectable = isMessageSelectable 
+    messageTextView.isSelectable = isMessageSelectable
     
     setUp()
   }
@@ -354,7 +360,7 @@ extension EMAlertController {
     messageTextView.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -Dimension.padding).isActive = true
     messageTextView.sizeToFit()
     
-    // actionStackView Constraints    
+    // actionStackView Constraints
     buttonStackView.topAnchor.constraint(equalTo: messageTextView.bottomAnchor, constant: 8).isActive = true
     buttonStackView.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: 0).isActive = true
     buttonStackView.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: 0).isActive = true
@@ -387,21 +393,21 @@ extension EMAlertController {
 
 // MARK: - Action Methods
 extension EMAlertController {
-  open func addAction(_ action: EMAlertAction) {
-    buttonStackView.addArrangedSubview(action)
-    
-    if buttonStackView.arrangedSubviews.count > 2 || textFields.count > 0 {
-      buttonStackView.axis = .vertical
-      buttonStackViewHeightConstraint?.constant = Dimension.buttonHeight * CGFloat(buttonStackView.arrangedSubviews.count)
-      buttonStackView.spacing = 0
-    } else {
-      buttonStackViewHeightConstraint?.constant = Dimension.buttonHeight
-      buttonStackView.axis = .horizontal
-      buttonStackView.spacing = 15
+    open func addAction(_ action: EMAlertAction) {
+        buttonStackView.addArrangedSubview(action)
+        action.titleFont = actionFont
+        if buttonStackView.arrangedSubviews.count > 2 || textFields.count > 0 {
+            buttonStackView.axis = .vertical
+            buttonStackViewHeightConstraint?.constant = Dimension.buttonHeight * CGFloat(buttonStackView.arrangedSubviews.count)
+            buttonStackView.spacing = 0
+        } else {
+            buttonStackViewHeightConstraint?.constant = Dimension.buttonHeight
+            buttonStackView.axis = .horizontal
+            buttonStackView.spacing = 15
+        }
+        
+        action.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
     }
-    
-    action.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-  }
   
   @objc func buttonAction(sender: EMAlertAction) {
     dismiss(animated: true, completion: nil)
